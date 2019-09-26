@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+    <meta charset='utf-8'>
+    <title>测试边距</title>
+    <meta name='keywords' content='关键字' />
+    <meta name='description' content='此网页描述' />
+    <style>
+        .box {
+            background: orange;
+        }
+
+        .content {
+            width: 200px;
+            height: 100px;
+            margin: 50px;
+            padding: 20px;
+            background: lightpink;
+            border: 10px solid lightblue;
+            overflow: scroll;
+        }
+
+        .child-content {
+            width: 400px;
+            height: 150px;
+            margin: 25px;
+            padding: 15px;
+            border: 5px solid red;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        #pointArea {
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pointArea"></div>
+    <div>
+        <p>block-content</p>
+        <p>width:200px;</p>
+        <p>height:100px;</p>
+        <p>margin:50px;</p>
+        <p>padding:20x;</p>
+        <p>border:10x;</p>
+        <br />
+        <p>child-content</p>
+        <p>width:400px;</p>
+        <p>height:150px;</p>
+        <p>margin:50px;</p>
+        <p>padding:10px;</p>
+        <p>border:5px;</p>
+    </div>
+    <div class="box">
+        <div class="content" id="block-content">
+            <div class="child-content" id="child-content">
+                内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长
+            </div>
+        </div>
+    </div>
+    <!-- <div class="box">
+        <span class="content"
+            id="inline-content">内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长内容很长很长</span>
+    </div> -->
+    <script>
+        var blockDom = document.getElementById("block-content");
+        var inlineDom = document.getElementById("inline-content");
+        var childDom = document.getElementById("child-content");
+        console.log('-----------------block-------------');
+        console.log('width >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        // clientWidth = width + paddingLeft + paddingRight = 200 + 20 + 20 = 240
+        console.log('clientWidth ->', blockDom.clientWidth);
+        // offsetWidth = width + paddingLeft + paddingRight + borderLeft + borderRight = 200 + 20 + 20 + 10 + 10 = 260
+        console.log('offsetWidth ->', blockDom.offsetWidth);
+
+        console.log('height >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        // clientHeight = height + paddingTop + paddingBottom = 100 + 20 + 20 = 140
+        console.log('clientHeight ->', blockDom.clientHeight);
+        // offsetHeight = height + paddingTop + paddingBottom + borderTop + borderBottom = 100 + 20 + 20 + 10 + 10 = 160
+        console.log('offsetHeight ->', blockDom.offsetHeight);
+
+        console.log('scroll >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        // scrollWidth = 真实宽度（可视区域宽度+被隐藏区域宽度）
+        //  =  block(paddingLeft) + child-content (offsetWidth) +  child-content (marginLeft)
+        //  = 20 + 440 + 25
+        //  = 485
+        console.log('scrollWidth ->', blockDom.scrollWidth);
+        // scrollHeight = 真实高度（可视区域高度+被隐藏区域高度） 
+        //  = block (paddingTop + paddingTopBottom) + child-content (offsetHeight) +  child-content (marginTop + marginBottom)
+        //  = (20 + 20) + 190 + (25 + 25)
+        //  = 280
+        console.log('scrollHeight ->', blockDom.scrollHeight);
+        // console.log('childDom ->', childDom);
+        blockDom.addEventListener('scroll', function (e) {
+            const {
+                scrollTop,
+                scrollLeft,
+            } = e.target;
+            console.log('scrollTop ->', scrollTop);
+            console.log('scrollLeft ->', scrollLeft);
+        })
+
+        blockDom.onmousemove = function (e) {
+            // 相关说明：https://segmentfault.com/a/1190000002405897
+            const {
+                clientX,
+                clientY,
+                pageX,
+                pageY,
+                offsetX,
+                offsetY,
+                layerX,
+                layerY,
+                screenX,
+                screenY
+            } = e;
+            document.getElementById('pointArea').innerHTML =
+                `clientX:${clientX}  clientY:${clientY}<br/>
+            pageX:${pageX}  pageY:${pageY}<br/>
+            offsetX:${offsetX}  offsetY:${offsetY}<br/>
+            layerX:${layerX}  layerY:${layerY}<br/>
+            screenX:${screenX}  screenY:${clientY}<br/>`;
+            console.log('e ->', e);
+        }
+        // window
+        console.log('window >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+
+        // 整个电脑屏幕的宽度
+        console.log('window.screen.width ->', window.screen.width);
+        // 屏幕可用工作区高度  = window.screen.width
+        console.log('window.screen.availWidth ->', window.screen.availWidth);
+        console.log('window.outerWidth ->', window.outerWidth);
+        console.log('window.innerWidth ->', window.innerWidth);
+        console.log('--------------分割线--------------')
+        // 整个电脑屏幕的高度
+        console.log('window.screen.height ->', window.screen.height);
+        // 屏幕可用工作区高度  = window.screen.height - 顶部工具栏
+
+        // 查看示意图： https://developer.mozilla.org/zh-CN/docs/Web/API/Window/outerHeight
+        console.log('window.outerHeight ->', window.outerHeight); // 浏览器可用高度 浏览器工作区高度（包括顶部工具栏）
+        console.log('window.innerHeight ->', window.innerHeight); // 浏览器可用高度 浏览器工作区高度（不包括顶部工具栏）
+    </script>
+</body>
+
+</html>
